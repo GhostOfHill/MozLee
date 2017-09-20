@@ -1,0 +1,7 @@
+JAVA
+1.SpringMVC(4.3)+Mybatis(3.4)
+2.MybatisExt
+3.Log4j2
+4.quartz2.2.3定时任务
+5.spring事物管理
+6.redis

@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:p="http://www.springframework.org/schema/p"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:mvc="http://www.springframework.org/schema/mvc"
+	xmlns:tx="http://www.springframework.org/schema/tx"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans  
+                        http://www.springframework.org/schema/beans/spring-beans-3.1.xsd  
+                        http://www.springframework.org/schema/context  
+                        http://www.springframework.org/schema/context/spring-context-3.1.xsd  
+                        http://www.springframework.org/schema/mvc  
+                        http://www.springframework.org/schema/mvc/spring-mvc-4.0.xsd
+                        http://www.springframework.org/schema/tx   
+    					http://www.springframework.org/schema/tx/spring-tx-4.3.xsd">
+	<!-- 自动扫描 -->
+	<context:component-scan base-package="com.mx" />
+	
+	<!-- 加载环境变量配置文件 -->
+	<bean id="propertyConfigurer"
+		class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+		<property name="locations">
+			<list>
+				<value>classpath:jdbc.properties</value>
+				<value>classpath:redis.properties</value>
+			</list>
+		</property>
+	</bean>
+	
+	<bean id="SpringContextUtil" class="com.mx.core.common.utils.SpringContextUtil" scope="singleton"></bean>
+	
+ 	<!-- 对静态资源文件的访问  -->  
+	<mvc:default-servlet-handler/>  
+	<!-- 开启静态资源过滤 需要此配置 否则controler访问不到 -->
+	<mvc:annotation-driven />
+	
+	<!-- 拦截器配置 -->
+	<mvc:interceptors>
+		<!-- 多个拦截器,顺序执行 -->
+		<mvc:interceptor>
+			<!-- 默认所有的请求都进行拦截 -->
+			<mvc:mapping path="/**"/>
+			<bean class="com.mx.core.interceptor.Interceptor"/>
+		</mvc:interceptor>
+	</mvc:interceptors>
+
+	<!-- 定义事务管理器 -->  
+	<bean id="transactionManager"  
+		class="org.springframework.jdbc.datasource.DataSourceTransactionManager">  
+		<property name="dataSource" ref="dataSource" />  
+	</bean>  
+	<!--使用注释事务 -->  
+	<tx:annotation-driven  transaction-manager="transactionManager" />
+	
+	<!-- reids配置 -->
+<!-- 	<import resource="spring-redis.xml"/> -->
+	
+	<!-- 使用quartz定时任务 -->
+<!-- 	<import resource="quartz.xml" /> -->
+</beans>

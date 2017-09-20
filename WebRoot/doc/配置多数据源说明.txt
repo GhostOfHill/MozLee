@@ -1,0 +1,57 @@
+一.jdbc.properties
+#第一个数据源
+driver2=org.postgresql.Driver
+url2=jdbc\:postgresql\://122.113.5.204\:5432/ipole_uc
+username2=ipole_uc
+password2=ipole_uc
+
+注：这里的key值需要跟二步骤的${key}对上。
+
+二.spring-mybatis.xml
+<!-- 第二个数据源 -->
+<bean id="secondDao" class="com.mx.core.base.MybatisDao">
+<!-- 注入SqlSessionTemplate实例 -->
+   <property name="sqlSessionFactory" ref="sqlSessionFactory2" />
+</bean>
+
+<!-- spring和MyBatis完美整合，不需要mybatis的配置映射文件 -->
+<bean id="sqlSessionFactory2" class="com.mx.core.common.mybatisext.SqlSessionFactoryBeanExt">
+	<property name="dataSource" ref="dataSource2" />
+	<!-- 自动扫描mapping.xml文件 -->
+	<property name="mapperLocations" value="classpath:com/mx/**/mapping/*.xml"></property>
+	<property name="typeAliasesPackage" value="com.mx.**.model" />
+	<property name="plugins" >
+		<bean id="tableSegInterceptor" class="com.mx.core.common.mybatisext.plugin.SqlRunTime"/>
+	</property>    
+</bean>
+
+<bean id="dataSource2" class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close">
+	<property name="driverClassName" value="${driver2}" />
+	<property name="url" value="${url2}" />
+	<property name="username" value="${username2}" />
+	<property name="password" value="${password2}" />
+	<!-- 初始化连接大小 -->
+	<property name="initialSize" value="${initialSize}"></property>
+	<!-- 连接池最大数量 -->
+	<property name="maxActive" value="${maxActive}"></property>
+	<!-- 连接池最大空闲 -->
+	<property name="maxIdle" value="${maxIdle}"></property>
+	<!-- 连接池最小空闲 -->
+	<property name="minIdle" value="${minIdle}"></property>
+	<!-- 获取连接最大等待时间 -->
+	<property name="maxWait" value="${maxWait}"></property>
+</bean>
+
+三.BaseService.java
+@Autowired(required=false)
+@Qualifier("secondDao")
+private MybatisDao<T> secondDao;//第二个数据源
+
+
+public MybatisDao<T> getSecondDao() {
+	this.secondDao.setModelName(this.getClass().getName().replace("service", "model").replace("Service", ""));
+	return secondDao;
+}
+
+四.使用方式
+在service层 this.getSecondDao();

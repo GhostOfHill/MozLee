@@ -1,0 +1,46 @@
+2017.03.12 1.4beta
+1.增加Mybatis自定义SqlSessionFactoryBean扫描通配符typeAliasesPackage
+2.增加配置多数据源项
+
+2017.03.09 1.3beta
+1.SqlSessionFactoryBeanExt类 在增加驼峰式命名
+2.增加事物管理 (使用方式:在service层 方法名上面 注解@Transactional(rollbackFor=Exception.class) 即可)
+3.修改web.xml文件里对spring-mvc.xml、spring-mybatis.xml配置方式
+4.redis交给spring去管理
+5.封装redisDao
+
+2016.11.27	1.1beta
+1.增加打印controler执行时长、参数
+2.增加登录模块
+
+2016.11.11
+1.增加SpringContextUtil类
+
+2016.11.06
+1.修改为热部署（加载到ROOT下，访问时不需要加上项目名称）
+2.创建resources、scripts、jsp目录结构
+3.增加登录页面
+
+2016.11.03
+1.增加quartz定时任务
+
+2016.10.13
+1.SpringMVC3.2升级到4.3
+2.Mybatis3.27升级到3.4
+3.解决项目报错问题
+
+2016.10.10
+1.扩展Mybatis，Mybatis配置文件修改后自动加载(改SQL不需要重启Tomcat)
+2.com.mx.core.common包路径调整
+
+2016.10.9
+1.扩展Mybatis，实现拦截Mapper接口方法功能(打印SQL执行时长)
+
+2016.09.27
+1.封装util类
+
+2016.09.26
+1.封装BaseController、BaseService、MybatisDao
+
+2016.09.25
+1.搭建springMVC+Mybatis项目

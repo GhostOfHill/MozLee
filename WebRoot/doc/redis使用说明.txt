@@ -1,0 +1,19 @@
+一.redis.properties
+	配置redis信息
+	集群时 redis.ip1  redis.port1  redis.ip2  redis.port2 redis.ip3  redis.port3即可
+
+二.spring-redis.xml
+	集群时
+	<bean class="redis.clients.jedis.HostAndPort">
+		<constructor-arg index="0" value="${redis.ip1}" />
+		<constructor-arg index="1" value="${redis.port1}" />
+	</bean>
+	增加多个即可
+
+三.spring-mvc.xml
+	解开注释<import resource="spring-redis.xml" />
+	
+四.BaseService.java
+	解开@Autowired   redisDao注解即可
+	
+注：详细方法参考 RedisDao.java
